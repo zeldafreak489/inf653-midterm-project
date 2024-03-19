@@ -7,6 +7,7 @@
 
     include_once '../../config/Database.php';
     include_once '../../models/Quote.php';
+    include_once '../../functions/helper.php';
 
     // Instantiate DB and connect
     $database = new Database();
@@ -17,6 +18,13 @@
 
     // Get raw author data
     $data = json_decode(file_get_contents("php://input"));
+
+    if (!isValid($data->id, "Quote")) {
+        echo json_encode(
+            array('message' => 'No Quotes Found')
+        );
+        die();
+    }
     
     if (isset($data->id)) {
         // Set ID to delete
